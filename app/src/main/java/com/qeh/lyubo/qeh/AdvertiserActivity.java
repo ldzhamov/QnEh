@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
@@ -33,21 +34,17 @@ public class AdvertiserActivity extends AppCompatActivity {
             AudioFormat.CHANNEL_IN_MONO,
             AudioFormat.ENCODING_PCM_16BIT);
 
+    TextView myStatusTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advertiser);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        myStatusTextView = (TextView)findViewById(R.id.statusView);
+        myStatusTextView.setText("Waiting to be connected ...");
+
+        audioBuffer = new byte[bufferSize / 2];
         cUser = ((QnEhApplication) this.getApplication()).getUser();
         startAdvertising();
     }
@@ -59,14 +56,12 @@ public class AdvertiserActivity extends AppCompatActivity {
                         /* serviceId= */ Constants.ServiceId,
                         mConnectionLifecycleCallback,
                         new AdvertisingOptions(Strategy.P2P_CLUSTER));
-        //mShouldContinuePlay = true;
     }
 
     private final ConnectionLifecycleCallback mConnectionLifecycleCallback =
             new ConnectionLifecycleCallback() {
                 @Override
                 public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
-                    // Automatically accept the connection on both sides.
                     final Task<Void> voidTask = Nearby.getConnectionsClient(getApplicationContext()).acceptConnection(endpointId, mPayloadCallback);
                 }
 
@@ -74,7 +69,8 @@ public class AdvertiserActivity extends AppCompatActivity {
                 public void onConnectionResult(String endpointId, ConnectionResolution result) {
                     switch (result.getStatus().getStatusCode()) {
                         case ConnectionsStatusCodes.STATUS_OK:
-                            if (cUser.getUserType() == Constants.USER_DISCOVERER){
+                            myStatusTextView.setText("You are now connected!");
+                            if (cUser.getUserType() == Constants.USER_ADVERTISER){
                                 recordAudio(endpointId);
                                 //mShouldContinue = true;
                             }
@@ -88,8 +84,7 @@ public class AdvertiserActivity extends AppCompatActivity {
 
                 @Override
                 public void onDisconnected(String endpointId) {
-                    // We've been disconnected from this endpoint. No more data can be
-                    // sent or received.
+                    myStatusTextView.setText("Disconnected!");
                 }
             };
 
@@ -97,6 +92,7 @@ public class AdvertiserActivity extends AppCompatActivity {
             new PayloadCallback() {
                 @Override
                 public void onPayloadReceived(String endpointId, Payload payload) {
+                    //myStatusTextView.setText("Payload receiving");
                     //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO);
                 }
 
@@ -132,7 +128,6 @@ public class AdvertiserActivity extends AppCompatActivity {
                     //int numberOfShortwrite = audioTrack.write(audioBuffer, 0, audioBuffer.length);
 
                 }
-
                 record.stop();
                 record.release();
             }

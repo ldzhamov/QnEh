@@ -48,10 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
     TextView myStatusTextView;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ActivityCompat.requestPermissions(this,
@@ -213,7 +209,8 @@ public class MainActivity extends AppCompatActivity {
     public void startAdvertising(View view) {
         EditText nameInput = (EditText) findViewById(R.id.nameInput);
         ((QnEhApplication) this.getApplication()).setUser(new QnEhUser(nameInput.getText().toString(), Constants.USER_ADVERTISER));
-
+        Intent aIntent = new Intent(MainActivity.this, AdvertiserActivity.class);
+        MainActivity.this.startActivity(aIntent);
     }
 
     public void startDiscovering(View view) {
@@ -274,9 +271,9 @@ public class MainActivity extends AppCompatActivity {
                         case ConnectionsStatusCodes.STATUS_OK:
                             myStatusTextView.setText("Status ok");
                             if (discoverer){
-                                myStatusTextView.setText("Sending bytes");
-                                recordAudio(endpointId);
-                                mShouldContinue = true;
+                                myStatusTextView.setText("Receiveing bytes");
+                                playAudio();
+                                mShouldContinuePlay = true;
                             }
                             break;
                         case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
