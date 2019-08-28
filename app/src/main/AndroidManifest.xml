@@ -10,6 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".AdvertiserActivity"
+            android:label="@string/title_activity_advertiser"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,13 +25,14 @@
         <service
             android:name=".AudioService"
             android:enabled="true"
-            android:exported="true"></service>
-    </application>
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!-- Required for Nearby Connections -->
+            android:exported="true" />
+    </application> <!-- Required for Nearby Connections -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
 </manifest>

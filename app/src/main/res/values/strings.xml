@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Q&amp;Eh</string>
+    <string name="title_activity_advertiser">AdvertiserActivity</string>
 </resources>

@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             AudioFormat.ENCODING_PCM_16BIT);
 
     TextView myStatusTextView;
+
 
 
 
@@ -209,15 +211,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startAdvertising(View view) {
-        Nearby.getConnectionsClient(this)
-                .startAdvertising(
-                        /* endpointName= */ "Device A",
-                        /* serviceId= */ "com.lyubo.qandeh",
-                        mConnectionLifecycleCallback,
-                        new AdvertisingOptions(Strategy.P2P_CLUSTER));
-        myStatusTextView.setText("Started advertizing");
-        mShouldContinuePlay = true;
-        playAudio();
+        EditText nameInput = (EditText) findViewById(R.id.nameInput);
+        ((QnEhApplication) this.getApplication()).setUser(new QnEhUser(nameInput.getText().toString(), Constants.USER_ADVERTISER));
+
     }
 
     public void startDiscovering(View view) {

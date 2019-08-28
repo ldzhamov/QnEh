@@ -11,19 +11,19 @@ public class QnEhUser {
         this.user_type = user_type;
     }
 
-    private String getName(){
+    public String getName(){
         return this.name;
     }
 
-    private void setName(String name){
+    public void setName(String name){
         this.name = name;
     }
 
-    private int getUserType(){
+    public int getUserType(){
         return this.user_type;
     }
 
-    private void setUserType(int user_type){
+    public void setUserType(int user_type){
         this.user_type = user_type;
     }
 }
