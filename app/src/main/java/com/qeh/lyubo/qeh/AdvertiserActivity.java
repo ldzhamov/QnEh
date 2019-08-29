@@ -1,5 +1,6 @@
 package com.qeh.lyubo.qeh;
 
+import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -47,6 +48,13 @@ public class AdvertiserActivity extends AppCompatActivity {
         audioBuffer = new byte[bufferSize / 2];
         cUser = ((QnEhApplication) this.getApplication()).getUser();
         startAdvertising();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Nearby.getConnectionsClient(this).stopAdvertising();
+        Intent nIntent = new Intent(AdvertiserActivity.this, MainActivity.class);
+        startActivity(nIntent);
     }
 
     public void startAdvertising(){
