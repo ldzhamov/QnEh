@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.nearby.Nearby;
-import com.google.android.gms.nearby.connection.AdvertisingOptions;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
 import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
 import com.google.android.gms.nearby.connection.ConnectionResolution;
@@ -208,19 +207,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void startAdvertising(View view) {
         EditText nameInput = (EditText) findViewById(R.id.nameInput);
-        ((QnEhApplication) this.getApplication()).setUser(new QnEhUser(nameInput.getText().toString(), Constants.USER_ADVERTISER));
+        ((QnEhApplication) this.getApplication()).setUser(new QnEhUser(nameInput.getText().toString(), Constants.USER_ADVERTISER, null));
         Intent aIntent = new Intent(MainActivity.this, AdvertiserActivity.class);
         MainActivity.this.startActivity(aIntent);
     }
 
     public void startDiscovering(View view) {
-        discoverer = true;
-        Nearby.getConnectionsClient(this)
-                .startDiscovery(
-                        /* serviceId= */ "com.lyubo.qandeh",
-                        mEndpointDiscoveryCallback,
-                        new DiscoveryOptions(Strategy.P2P_CLUSTER));
-        myStatusTextView.setText("Started discovering");
+        Intent aIntent = new Intent(MainActivity.this, DiscovererActivity.class);
+        MainActivity.this.startActivity(aIntent);
+//        discoverer = true;
+//        Nearby.getConnectionsClient(this)
+//                .startDiscovery(
+//                        /* serviceId= */ "com.lyubo.qandeh",
+//                        mEndpointDiscoveryCallback,
+//                        new DiscoveryOptions(Strategy.P2P_CLUSTER));
+//        myStatusTextView.setText("Started discovering");
     }
 
     EndpointDiscoveryCallback mEndpointDiscoveryCallback = new EndpointDiscoveryCallback() {

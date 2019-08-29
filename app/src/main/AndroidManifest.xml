@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.qeh.lyubo.qeh">
-
+    <!-- Required for Nearby Connections -->
     <application
         android:name=".QnEhApplication"
         android:allowBackup="true"
@@ -11,9 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".DiscovererActivity"
+            android:label="@string/title_activity_discoverer"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".AdvertiserActivity"
             android:label="@string/title_activity_advertiser"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,13 +30,13 @@
             android:name=".AudioService"
             android:enabled="true"
             android:exported="true" />
-    </application> <!-- Required for Nearby Connections -->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
+    </application>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
 </manifest>
