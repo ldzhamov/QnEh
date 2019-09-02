@@ -15,17 +15,19 @@ import java.util.ArrayList;
 public class AdvertiserAdapter extends RecyclerView.Adapter<AdvertiserAdapter.AdvertiserHolder>{
 
     private ArrayList<QnEhUser> mUsers = new ArrayList<QnEhUser>();
+    private OnUserListener mOnUserListener;
     Context mContext;
 
-    public AdvertiserAdapter(Context mContext, ArrayList<QnEhUser> users) {
+    public AdvertiserAdapter(Context mContext, ArrayList<QnEhUser> users, OnUserListener onUserListener) {
         this.mUsers = users;
         this.mContext = mContext;
+        this.mOnUserListener = onUserListener;
     }
 
     @Override
     public AdvertiserHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.advertiser_item, parent, false);
-        AdvertiserHolder holder = new AdvertiserHolder(view);
+        AdvertiserHolder holder = new AdvertiserHolder(view, mOnUserListener);
         return holder;
     }
 
@@ -39,17 +41,30 @@ public class AdvertiserAdapter extends RecyclerView.Adapter<AdvertiserAdapter.Ad
         return mUsers.size();
     }
 
-    public class AdvertiserHolder extends RecyclerView.ViewHolder {
+    public class AdvertiserHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView image;
         TextView username;
         RelativeLayout advertiserItem;
+        OnUserListener onUserListener;
 
-        public AdvertiserHolder(View itemView) {
+        public AdvertiserHolder(View itemView, OnUserListener onUserListener) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
             username = itemView.findViewById(R.id.username);
             advertiserItem = itemView.findViewById(R.id.advertiser_item);
+            this.onUserListener = onUserListener;
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onUserListener.onUserClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnUserListener{
+        void onUserClick(int position);
     }
 }

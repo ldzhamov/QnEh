@@ -7,11 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
 
-public class DiscovererActivity extends AppCompatActivity {
+public class DiscovererActivity extends AppCompatActivity implements AdvertiserAdapter.OnUserListener{
 
     private ArrayList<QnEhUser> mUsers = new ArrayList<QnEhUser>();
 
@@ -39,8 +40,14 @@ public class DiscovererActivity extends AppCompatActivity {
 
     private void initAdvertisersView(){
         RecyclerView advertisersView = findViewById(R.id.advertisers_view);
-        AdvertiserAdapter adapter = new AdvertiserAdapter(this, mUsers);
+        AdvertiserAdapter adapter = new AdvertiserAdapter(this, mUsers, this);
         advertisersView.setAdapter(adapter);
         advertisersView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public void onUserClick(int position) {
+        QnEhUser clicked_user = mUsers.get(position);
+        Log.d("Discoverer activity ", "clicked user: "+clicked_user.getName());
     }
 }
