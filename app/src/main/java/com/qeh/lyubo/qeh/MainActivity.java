@@ -213,6 +213,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startDiscovering(View view) {
+        EditText nameInput = (EditText) findViewById(R.id.nameInput);
+        ((QnEhApplication) this.getApplication()).setUser(new QnEhUser(nameInput.getText().toString(), Constants.USER_ADVERTISER, null));
         Intent aIntent = new Intent(MainActivity.this, DiscovererActivity.class);
         MainActivity.this.startActivity(aIntent);
 //        discoverer = true;

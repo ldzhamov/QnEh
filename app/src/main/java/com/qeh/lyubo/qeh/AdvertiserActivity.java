@@ -5,6 +5,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,18 +19,26 @@ import com.google.android.gms.nearby.connection.AdvertisingOptions;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
 import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
 import com.google.android.gms.nearby.connection.ConnectionResolution;
+import com.google.android.gms.nearby.connection.ConnectionsClient;
 import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+
+import java.io.IOException;
+import java.util.Set;
 
 public class AdvertiserActivity extends AppCompatActivity {
     QnEhUser cUser;
     boolean mShouldContinue = true;
     final int SAMPLE_RATE = 44100; // The sampling rate
     byte[] audioBuffer;
+    private ConnectionsClient mConnectionsClient;
+    private AudioRecorder mRecorder;
+
     // buffer size in bytes
     int bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE,
             AudioFormat.CHANNEL_IN_MONO,
@@ -47,18 +56,21 @@ public class AdvertiserActivity extends AppCompatActivity {
 
         audioBuffer = new byte[bufferSize / 2];
         cUser = ((QnEhApplication) this.getApplication()).getUser();
+
+        mConnectionsClient = Nearby.getConnectionsClient(this);
+
         startAdvertising();
     }
 
     @Override
     public void onBackPressed() {
-        Nearby.getConnectionsClient(this).stopAdvertising();
+        mConnectionsClient.stopAdvertising();
         Intent nIntent = new Intent(AdvertiserActivity.this, MainActivity.class);
         startActivity(nIntent);
     }
 
     public void startAdvertising(){
-        Nearby.getConnectionsClient(this)
+        mConnectionsClient
                 .startAdvertising(
                         /* endpointName= */ cUser.getName(),
                         /* serviceId= */ Constants.ServiceId,
@@ -70,7 +82,7 @@ public class AdvertiserActivity extends AppCompatActivity {
             new ConnectionLifecycleCallback() {
                 @Override
                 public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
-                    final Task<Void> voidTask = Nearby.getConnectionsClient(getApplicationContext()).acceptConnection(endpointId, mPayloadCallback);
+                    final Task<Void> voidTask = mConnectionsClient.acceptConnection(endpointId, mPayloadCallback);
                 }
 
                 @Override
@@ -79,7 +91,8 @@ public class AdvertiserActivity extends AppCompatActivity {
                         case ConnectionsStatusCodes.STATUS_OK:
                             myStatusTextView.setText("You are now connected!");
                             if (cUser.getUserType() == Constants.USER_ADVERTISER){
-                                recordAudio(endpointId);
+                                startRecording(endpointId);
+                                //recordAudio(endpointId);
                                 //mShouldContinue = true;
                             }
                             break;
@@ -95,6 +108,34 @@ public class AdvertiserActivity extends AppCompatActivity {
                     myStatusTextView.setText("Disconnected!");
                 }
             };
+
+    private void startRecording(String endpointId) {
+        try {
+            ParcelFileDescriptor[] payloadPipe = ParcelFileDescriptor.createPipe();
+
+            // Send the first half of the payload (the read side) to Nearby Connections.
+            send(Payload.fromStream(payloadPipe[0]), endpointId);
+
+            // Use the second half of the payload (the write side) in AudioRecorder.
+            mRecorder = new AudioRecorder(payloadPipe[1]);
+            mRecorder.start();
+        } catch (IOException e) {
+            Log.e("Advertiser activity ", "Exception pipe");
+        }
+    }
+
+    private void send(Payload payload, String endpoint) {
+        mConnectionsClient
+            .sendPayload(endpoint, payload)
+            .addOnFailureListener(
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                });
+        myStatusTextView.setText("recording!!!");
+    }
 
     private final PayloadCallback mPayloadCallback =
             new PayloadCallback() {
@@ -132,7 +173,7 @@ public class AdvertiserActivity extends AppCompatActivity {
                     //myStatusTextView.setText("Sending bytes 1");
                     int numberOfShort = record.read(audioBuffer, 0, audioBuffer.length);
                     Payload bytesPayload = Payload.fromBytes(audioBuffer);
-                    Nearby.getConnectionsClient(getApplicationContext()).sendPayload(endpointId, bytesPayload);
+                    mConnectionsClient.sendPayload(endpointId, bytesPayload);
                     //int numberOfShortwrite = audioTrack.write(audioBuffer, 0, audioBuffer.length);
 
                 }

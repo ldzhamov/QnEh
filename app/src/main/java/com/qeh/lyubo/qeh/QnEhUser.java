@@ -1,9 +1,13 @@
 package com.qeh.lyubo.qeh;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class QnEhUser {
     private int user_type;
     private String name;
     private String endpoint;
+    HashMap<String, QnEhUser> advertisers;
 
     public QnEhUser(){ }
 
@@ -11,6 +15,7 @@ public class QnEhUser {
         this.name = name;
         this.user_type = user_type;
         this.endpoint = endpoint;
+        this.advertisers  = new HashMap<String, QnEhUser>();
     }
 
     public String getName(){
@@ -35,5 +40,12 @@ public class QnEhUser {
 
     public void setEndpoint(String endpoint){
         this.endpoint = endpoint;
+    }
+
+    public void setAdvertises(HashMap<String, QnEhUser> advertisers){
+        this.advertisers = advertisers;
+    }
+    public HashMap<String, QnEhUser> getAdvertisers(){
+        return this.advertisers;
     }
 }
