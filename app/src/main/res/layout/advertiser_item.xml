@@ -10,7 +10,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:id="@+id/image"
-        android:src="@mipmap/ic_launcher_round">
+        android:src="@drawable/speaker_offline">
 
     </ImageView>
     
