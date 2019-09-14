@@ -87,7 +87,7 @@ public class DiscovererActivity extends AppCompatActivity implements AdvertiserA
         mAdvertisers = cUser.getAdvertisers();
         mAdvertisers.remove(endpoint);
         cUser.setAdvertisers(mAdvertisers);
-        //ArrayList<QnEhUser> mUsers = new ArrayList<QnEhUser>(cUser.getAdvertisers().values());
+        ArrayList<QnEhUser> mUsers = new ArrayList<QnEhUser>(cUser.getAdvertisers().values());
     }
 
     private void addAdvertiser(QnEhUser user){
@@ -101,6 +101,9 @@ public class DiscovererActivity extends AppCompatActivity implements AdvertiserA
     @Override
     public void onUserClick(int position) {
         clicked_user = mUsers.get(position);
+        clicked_user.setStatus(Constants.STATUS_CONNECTING);
+        cUser.setStatusAdvertiser(clicked_user, Constants.STATUS_CONNECTING);
+        adapter.notifyDataSetChanged();
         connectToEndpoint(clicked_user.getEndpoint());
     }
 
@@ -163,6 +166,9 @@ public class DiscovererActivity extends AppCompatActivity implements AdvertiserA
                 if (!result.getStatus().isSuccess()) {
                     return;
                 }
+                cUser.getAdvertiserByEndpoint(endpointId).setStatus(Constants.STATUS_CONNECTED);
+                ArrayList<QnEhUser> mUsers = new ArrayList<QnEhUser>(cUser.getAdvertisers().values());
+                adapter.notifyDataSetChanged();
             }
 
             @Override

@@ -7,7 +7,7 @@ public class QnEhUser {
     private int user_type;
     private String name;
     private String endpoint;
-    private boolean is_connected;
+    private int status;
     HashMap<String, QnEhUser> advertisers;
 
     public QnEhUser(){ }
@@ -17,7 +17,7 @@ public class QnEhUser {
         this.user_type = user_type;
         this.endpoint = endpoint;
         this.advertisers  = new HashMap<String, QnEhUser>();
-        this.is_connected = false;
+        this.status = Constants.STATUS_DISCONNECTED;
     }
 
     public String getName(){
@@ -49,5 +49,23 @@ public class QnEhUser {
     }
     public HashMap<String, QnEhUser> getAdvertisers(){
         return this.advertisers;
+    }
+
+    public void setStatus(int status){
+        this.status = status;
+    }
+
+    public int getStatus(){ return this.status; }
+
+    public int getStatusAdvertiser(QnEhUser user) {
+        return this.getAdvertisers().get(user.getEndpoint()).getStatus();
+    }
+
+    public void setStatusAdvertiser(QnEhUser user, int status){
+        this.getAdvertisers().get(user.getEndpoint()).setStatus(status);
+    }
+
+    public QnEhUser getAdvertiserByEndpoint(String endpoint){
+        return this.getAdvertisers().get(endpoint);
     }
 }

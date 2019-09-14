@@ -28,15 +28,9 @@ import java.io.IOException;
 public class AdvertiserActivity extends AppCompatActivity {
     QnEhUser cUser;
     boolean mShouldContinue = true;
-    final int SAMPLE_RATE = 44100; // The sampling rate
     byte[] audioBuffer;
     private ConnectionsClient mConnectionsClient;
     private AudioRecorder mRecorder;
-
-    // buffer size in bytes
-    int bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE,
-            AudioFormat.CHANNEL_IN_MONO,
-            AudioFormat.ENCODING_PCM_16BIT);
 
     TextView myStatusTextView;
 
@@ -48,7 +42,6 @@ public class AdvertiserActivity extends AppCompatActivity {
         myStatusTextView = (TextView)findViewById(R.id.statusView);
         myStatusTextView.setText("Waiting to be connected ...");
 
-        audioBuffer = new byte[bufferSize / 2];
         cUser = ((QnEhApplication) this.getApplication()).getUser();
 
         mConnectionsClient = Nearby.getConnectionsClient(this);

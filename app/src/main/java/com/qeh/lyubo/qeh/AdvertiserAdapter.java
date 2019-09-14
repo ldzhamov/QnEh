@@ -34,6 +34,9 @@ public class AdvertiserAdapter extends RecyclerView.Adapter<AdvertiserAdapter.Ad
     @Override
     public void onBindViewHolder(@NonNull AdvertiserHolder advertiserHolder, int position) {
             advertiserHolder.username.setText(mUsers.get(position).getName());
+            if (mUsers.get(position).getStatus() == Constants.STATUS_CONNECTED) {
+                advertiserHolder.image.setImageResource(R.drawable.speaker_online);
+            }
     }
 
     @Override
