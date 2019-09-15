@@ -13,17 +13,31 @@
         android:src="@drawable/speaker_offline">
 
     </ImageView>
-    
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test"
+        android:text=""
         android:id="@+id/username"
+        android:layout_toRightOf="@+id/image"
+        android:textColor="#000"
+        android:layout_marginLeft="30dp"
+        android:textSize="27sp">
+
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/connection_status"
         android:layout_toRightOf="@+id/image"
         android:textColor="#000"
         android:layout_centerVertical="true"
         android:layout_marginLeft="30dp"
-        android:textSize="27sp">
+        android:layout_below="@id/username"
+        android:layout_marginTop="16dp"
+        android:textSize="15sp">
 
     </TextView>
 

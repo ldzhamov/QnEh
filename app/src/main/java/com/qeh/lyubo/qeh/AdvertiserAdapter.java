@@ -1,6 +1,7 @@
 package com.qeh.lyubo.qeh;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,6 +37,15 @@ public class AdvertiserAdapter extends RecyclerView.Adapter<AdvertiserAdapter.Ad
             advertiserHolder.username.setText(mUsers.get(position).getName());
             if (mUsers.get(position).getStatus() == Constants.STATUS_CONNECTED) {
                 advertiserHolder.image.setImageResource(R.drawable.speaker_online);
+                advertiserHolder.advertiserItem.setBackgroundColor(Color.parseColor("#66ff33"));
+                advertiserHolder.connection_status.setText("Connected");
+            }
+            else if (mUsers.get(position).getStatus() == Constants.STATUS_CONNECTING){
+                advertiserHolder.advertiserItem.setBackgroundColor(Color.parseColor("#ffa31a"));
+                advertiserHolder.connection_status.setText("Connecting...");
+            }
+            else{
+                advertiserHolder.connection_status.setText("Advertising...");
             }
     }
 
@@ -48,6 +58,7 @@ public class AdvertiserAdapter extends RecyclerView.Adapter<AdvertiserAdapter.Ad
 
         ImageView image;
         TextView username;
+        TextView connection_status;
         RelativeLayout advertiserItem;
         OnUserListener onUserListener;
 
@@ -56,6 +67,7 @@ public class AdvertiserAdapter extends RecyclerView.Adapter<AdvertiserAdapter.Ad
             image = itemView.findViewById(R.id.image);
             username = itemView.findViewById(R.id.username);
             advertiserItem = itemView.findViewById(R.id.advertiser_item);
+            connection_status = itemView.findViewById(R.id.connection_status);
             this.onUserListener = onUserListener;
 
             itemView.setOnClickListener(this);
