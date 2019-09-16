@@ -1,5 +1,6 @@
 package com.qeh.lyubo.qeh;
 
+import android.content.Intent;
 import android.gesture.GestureOverlayView;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +31,8 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import static android.support.v7.widget.RecyclerView.HORIZONTAL;
 
@@ -49,6 +52,13 @@ public class DiscovererActivity extends AppCompatActivity implements AdvertiserA
         setContentView(R.layout.activity_discoverer);
         mConnectionsClient = Nearby.getConnectionsClient(this);
         initUsers();
+    }
+
+    @Override
+    public void onBackPressed() {
+        cleanup();
+        Intent nIntent = new Intent(DiscovererActivity.this, MainActivity.class);
+        startActivity(nIntent);
     }
 
     private void initUsers(){
@@ -100,11 +110,23 @@ public class DiscovererActivity extends AppCompatActivity implements AdvertiserA
 
     @Override
     public void onUserClick(int position) {
+        cleanup();
         clicked_user = mUsers.get(position);
         clicked_user.setStatus(Constants.STATUS_CONNECTING);
         cUser.setStatusAdvertiser(clicked_user, Constants.STATUS_CONNECTING);
         adapter.notifyDataSetChanged();
         connectToEndpoint(clicked_user.getEndpoint());
+    }
+
+    private void cleanup() {
+        if (mAudioPlayer != null) {
+            mAudioPlayer.stop();
+        }
+        for (QnEhUser user : cUser.getAdvertisers().values()) {
+            mConnectionsClient.disconnectFromEndpoint(user.getEndpoint());
+            user.setStatus(Constants.STATUS_DISCONNECTED);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     protected void startDiscovering() {

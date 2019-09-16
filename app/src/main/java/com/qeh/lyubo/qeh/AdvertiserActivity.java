@@ -88,6 +88,8 @@ public class AdvertiserActivity extends AppCompatActivity {
 
             @Override
             public void onDisconnected(String endpointId) {
+                mRecorder.stop();
+                startAdvertising();
                 myStatusTextView.setText("Disconnected!");
             }
         };

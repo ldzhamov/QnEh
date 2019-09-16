@@ -45,6 +45,7 @@ public class AdvertiserAdapter extends RecyclerView.Adapter<AdvertiserAdapter.Ad
                 advertiserHolder.connection_status.setText("Connecting...");
             }
             else{
+                advertiserHolder.advertiserItem.setBackgroundColor(Color.parseColor("#ffffff"));
                 advertiserHolder.connection_status.setText("Advertising...");
             }
     }
