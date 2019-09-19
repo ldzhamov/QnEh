@@ -1,6 +1,7 @@
 package com.qeh.lyubo.qeh;
 
 import android.Manifest;
+import android.app.AutomaticZenRule;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioFormat;
@@ -13,8 +14,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,12 +48,16 @@ public class MainActivity extends AppCompatActivity {
                     Manifest.permission.RECORD_AUDIO,
                     Manifest.permission.ACCESS_FINE_LOCATION
             };
+    private Button requestMicrophoneButton;
+    private Button sharedMicrophoneButton;
+    private TextView nameText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkAndRequestPermissions();
+        initButtons();
     }
 
     @Override
@@ -88,6 +96,42 @@ public class MainActivity extends AppCompatActivity {
                     listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),
                     MY_PERMISSIONS_CODE);
         }
+    }
+
+    public void initButtons(){
+        requestMicrophoneButton = (Button) findViewById(R.id.startAdvertising);
+        sharedMicrophoneButton = (Button) findViewById(R.id.startDiscovering);
+        nameText = (TextView) findViewById(R.id.nameInput);
+
+        requestMicrophoneButton.setEnabled(false);
+        sharedMicrophoneButton.setEnabled(false);
+
+        nameText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().trim().length()==0){
+                    requestMicrophoneButton.setEnabled(false);
+                    sharedMicrophoneButton.setEnabled(false);
+                } else {
+                    requestMicrophoneButton.setEnabled(true);
+                    sharedMicrophoneButton.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+
+            }
+        });
     }
 
     public void startAdvertising(View view) {

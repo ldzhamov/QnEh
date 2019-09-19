@@ -12,12 +12,13 @@
         android:layout_height="55dp"
         android:layout_marginStart="8dp"
         android:onClick="startAdvertising"
-        android:text="Start advertising"
+        android:text="@string/title_share_microphone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.37"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.389" />
 
     <Button
         android:id="@+id/startDiscovering"
@@ -25,13 +26,13 @@
         android:layout_height="54dp"
         android:layout_marginEnd="8dp"
         android:onClick="startDiscovering"
-        android:text="Start dicovering"
+        android:text="@string/title_request_microphone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.596" />
+        app:layout_constraintVertical_bias="0.534" />
 
     <EditText
         android:id="@+id/nameInput"
@@ -40,12 +41,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:hint="Enter your name"
+        android:hint="@string/hint_name_main"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.384" />
+        app:layout_constraintVertical_bias="0.213" />
 </android.support.constraint.ConstraintLayout>
