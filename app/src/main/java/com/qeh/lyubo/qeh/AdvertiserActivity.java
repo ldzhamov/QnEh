@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.nearby.Nearby;
@@ -33,6 +34,7 @@ public class AdvertiserActivity extends AppCompatActivity {
     private AudioRecorder mRecorder;
 
     TextView myStatusTextView;
+    ImageView image_microphone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,10 @@ public class AdvertiserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_advertiser);
 
         myStatusTextView = (TextView)findViewById(R.id.statusView);
+        image_microphone = (ImageView) findViewById(R.id.image_microphone);
+
         myStatusTextView.setText("Waiting to be connected ...");
+        image_microphone.setImageResource(R.drawable.microphone_offline);
 
         cUser = ((QnEhApplication) this.getApplication()).getUser();
 
@@ -78,6 +83,7 @@ public class AdvertiserActivity extends AppCompatActivity {
                     case ConnectionsStatusCodes.STATUS_OK:
                         myStatusTextView.setText("You are now connected!");
                         startRecording(endpointId);
+                        image_microphone.setImageResource(R.drawable.microphone_online);
                         break;
                     case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                         break;
@@ -91,6 +97,7 @@ public class AdvertiserActivity extends AppCompatActivity {
                 mRecorder.stop();
                 startAdvertising();
                 myStatusTextView.setText("Disconnected!");
+                image_microphone.setImageResource(R.drawable.microphone_offline);
             }
         };
 
@@ -119,7 +126,8 @@ public class AdvertiserActivity extends AppCompatActivity {
 
                     }
                 });
-        myStatusTextView.setText("recording!!!");
+        myStatusTextView.setText("The mic is yours!");
+        image_microphone.setImageResource(R.drawable.microphone_online);
     }
 
     private final PayloadCallback mPayloadCallback =

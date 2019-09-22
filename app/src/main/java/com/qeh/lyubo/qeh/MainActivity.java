@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    QnEhUser cUser;
     private final int MY_PERMISSIONS_CODE = 1240;
     private String[] appPermissions = {
                     Manifest.permission.RECORD_AUDIO,
@@ -102,9 +103,14 @@ public class MainActivity extends AppCompatActivity {
         requestMicrophoneButton = (Button) findViewById(R.id.startAdvertising);
         sharedMicrophoneButton = (Button) findViewById(R.id.startDiscovering);
         nameText = (TextView) findViewById(R.id.nameInput);
+        cUser = ((QnEhApplication) this.getApplication()).getUser();
 
         requestMicrophoneButton.setEnabled(false);
         sharedMicrophoneButton.setEnabled(false);
+
+        if (cUser != null){
+            nameText.setText(cUser.getName());
+        }
 
         nameText.addTextChangedListener(new TextWatcher() {
 
