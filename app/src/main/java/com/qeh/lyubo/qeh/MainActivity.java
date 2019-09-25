@@ -110,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (cUser != null){
             nameText.setText(cUser.getName());
+            requestMicrophoneButton.setEnabled(true);
+            sharedMicrophoneButton.setEnabled(true);
         }
 
         nameText.addTextChangedListener(new TextWatcher() {

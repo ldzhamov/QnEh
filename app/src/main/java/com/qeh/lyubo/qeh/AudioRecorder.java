@@ -46,7 +46,6 @@ public class AudioRecorder {
     /** Starts recording audio. */
     public void start() {
         if (isRecording()) {
-            Log.w(TAG, "Already running");
             return;
         }
 
@@ -67,7 +66,6 @@ public class AudioRecorder {
                                         buffer.size);
 
                         if (record.getState() != AudioRecord.STATE_INITIALIZED) {
-                            Log.w(TAG, "Failed to start recording");
                             mAlive = false;
                             return;
                         }
@@ -83,17 +81,14 @@ public class AudioRecorder {
                                     mOutputStream.write(buffer.data, 0, len);
                                     mOutputStream.flush();
                                 } else {
-                                    Log.w(TAG, "Unexpected length returned: " + len);
                                 }
                             }
                         } catch (IOException e) {
-                            Log.e(TAG, "Exception with recording stream", e);
                         } finally {
                             stopInternal();
                             try {
                                 record.stop();
                             } catch (IllegalStateException e) {
-                                Log.e(TAG, "Failed to stop AudioRecord", e);
                             }
                             record.release();
                         }
@@ -107,7 +102,6 @@ public class AudioRecorder {
         try {
             mOutputStream.close();
         } catch (IOException e) {
-            Log.e(TAG, "Failed to close output stream", e);
         }
     }
 
@@ -117,7 +111,6 @@ public class AudioRecorder {
         try {
             mThread.join();
         } catch (InterruptedException e) {
-            Log.e(TAG, "Interrupted while joining AudioRecorder thread", e);
             Thread.currentThread().interrupt();
         }
     }

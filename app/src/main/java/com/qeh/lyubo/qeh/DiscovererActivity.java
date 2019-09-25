@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.HorizontalScrollView;
 
@@ -45,11 +46,15 @@ public class DiscovererActivity extends AppCompatActivity implements AdvertiserA
     QnEhUser clicked_user;
     private ConnectionsClient mConnectionsClient;
     private AudioPlayer mAudioPlayer;
+    Toolbar discovererToolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discoverer);
+        discovererToolbar = findViewById(R.id.toolbar);
+        discovererToolbar.setTitle("Users list:");
         mConnectionsClient = Nearby.getConnectionsClient(this);
         initUsers();
     }
@@ -62,7 +67,6 @@ public class DiscovererActivity extends AppCompatActivity implements AdvertiserA
     }
 
     private void initUsers(){
-        Log.e("Discovery activity: ", "Init users");
         cUser = ((QnEhApplication) this.getApplication()).getUser();
         mAdvertisers = cUser.getAdvertisers();
         mAdvertisers.put("12345", new QnEhUser("User 1", Constants.USER_ADVERTISER, "12345"));
@@ -171,7 +175,6 @@ public class DiscovererActivity extends AppCompatActivity implements AdvertiserA
                         new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.e("Discovery activity ", "Failed to connect");
                             }
                         });
     }

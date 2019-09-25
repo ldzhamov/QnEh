@@ -73,18 +73,14 @@ public class AudioService extends Service {
                         bufferSize);
 
                 if (record.getState() != AudioRecord.STATE_INITIALIZED) {
-                    Log.e("Audio Service", "Audio Record can't initialize!");
                     return;
                 }
                 record.startRecording();
-
-                Log.v("Audio service", "Start recording");
 
                 long shortsRead = 0;
                 while (mShouldContinue) {
                     int numberOfShort = record.read(audioBuffer, 0, audioBuffer.length);
                     shortsRead += numberOfShort;
-                    Log.e("Audio Service", "Shorts read "+String.valueOf(shortsRead));
                 }
 
                 record.stop();
@@ -115,20 +111,16 @@ public class AudioService extends Service {
 
                 audioTrack.play();
 
-                Log.v("Audio Service", "Audio streaming started");
                 int shortsWrite = 0;
                 while (mShouldContinuePlay) {
 
                     int numberOfShort = audioTrack.write(audioBuffer, 0, audioBuffer.length);
                     shortsWrite += numberOfShort;
-                    Log.e("Audio Service", "Shorts write "+String.valueOf(shortsWrite));
                 }
 
                 if (!mShouldContinuePlay) {
                     audioTrack.release();
                 }
-
-                Log.v("Audio Service", "Audio streaming finished. Samples written: ");
             }
         }).start();
     }

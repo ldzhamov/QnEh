@@ -5,10 +5,12 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
@@ -33,6 +35,7 @@ public class AdvertiserActivity extends AppCompatActivity {
     private ConnectionsClient mConnectionsClient;
     private AudioRecorder mRecorder;
 
+    Toolbar advertiserToolbar;
     TextView myStatusTextView;
     ImageView image_microphone;
 
@@ -40,6 +43,9 @@ public class AdvertiserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advertiser);
+
+        advertiserToolbar = findViewById(R.id.toolbar);
+        advertiserToolbar.setTitle("Requesting microphone");
 
         myStatusTextView = (TextView)findViewById(R.id.statusView);
         image_microphone = (ImageView) findViewById(R.id.image_microphone);
@@ -112,7 +118,6 @@ public class AdvertiserActivity extends AppCompatActivity {
             mRecorder = new AudioRecorder(payloadPipe[1]);
             mRecorder.start();
         } catch (IOException e) {
-            Log.e("Advertiser activity ", "Exception pipe");
         }
     }
 

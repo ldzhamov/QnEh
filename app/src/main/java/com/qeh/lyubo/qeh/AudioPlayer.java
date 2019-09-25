@@ -69,7 +69,6 @@ public class AudioPlayer {
                                 audioTrack.write(buffer.data, 0, len);
                             }
                         } catch (IOException e) {
-                            Log.e(TAG, "Exception with playing stream", e);
                         } finally {
                             stopInternal();
                             audioTrack.release();
@@ -85,7 +84,6 @@ public class AudioPlayer {
         try {
             mInputStream.close();
         } catch (IOException e) {
-            Log.e(TAG, "Failed to close input stream", e);
         }
     }
 
@@ -95,7 +93,6 @@ public class AudioPlayer {
         try {
             mThread.join();
         } catch (InterruptedException e) {
-            Log.e(TAG, "Interrupted while joining AudioRecorder thread", e);
             Thread.currentThread().interrupt();
         }
     }

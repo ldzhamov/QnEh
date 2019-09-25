@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Q&amp;Eh</string>
-    <string name="title_activity_advertiser">AdvertiserActivity</string>
-    <string name="title_activity_discoverer">DiscovererActivity</string>
+    <string name="title_activity_advertiser">Advertiser Activity</string>
+    <string name="title_activity_discoverer">Discoverer Activity</string>
     <string name="title_request_microphone">Request microphone</string>
     <string name="title_share_microphone">Share microphone</string>
     <string name="hint_name_main">Enter your name</string>
