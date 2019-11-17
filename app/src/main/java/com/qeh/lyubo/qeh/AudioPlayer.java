@@ -7,6 +7,7 @@ import static com.qeh.lyubo.qeh.Constants.TAG;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.media.audiofx.AcousticEchoCanceler;
 import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,6 +63,9 @@ public class AudioPlayer {
                                         buffer.size,
                                         AudioTrack.MODE_STREAM);
                         audioTrack.play();
+                        if (AcousticEchoCanceler.isAvailable()){
+                            AcousticEchoCanceler.create(audioTrack.getAudioSessionId());
+                        }
 
                         int len;
                         try {
